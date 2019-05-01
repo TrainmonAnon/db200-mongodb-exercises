@@ -1,0 +1,63 @@
+use mongo_exercises
+db.movies.insert({"title" : "Star Wars", "writer" : "George Lucas", "year" : "1977", "actors" : ["Mark Hamill","Harison Ford","Carrie Fisher","Peter Chushing","James Earl Jones"]});
+etc...
+db.movies.find({});
+db.movies.find({"writer":"Quentin Tarantino"});
+db.movies.find({"actors": "Brad Pitt"]});
+db.movies.find({"franchise":"The Hobbit"});
+db.movies.find({"year":{$gte:1990,$lt:2000}});
+db.movies.find({$or:[{"year":{$lt:2000}},{"year":{$gt:2010}}]});
+
+db.movies.updateOne({"title":"The Hobbit: An Unexpected Journey"},{$set: {"synopsis":"A reluctant hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home - and the gold within it - from the dragon Smaug."}});
+db.movies.updateOne({"title":"The Hobbit: The Desolation of Smaug"},{$set: {"synopsis":"The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring."}});
+db.movies.updateOne({"title":"Pulp Fiction"},{$push:{"actors":"Samuel L. Jackson"}});
+
+db.movies.find({"synopsis":/Bilbo/});
+db.movies.find({$and:[{"synopsis":/Bilbo/}, {"synopsis":{$not:/Gandalf/}}]});
+db.movies.find({$or:[{"synopsis":/dwarves/}, {"synopsis":/hobbit/}]});
+db.movies.find({$and:[{"synopsis":/gold/}, {"synopsis":/dragon/}]});
+
+db.movies.deleteOne({"title":"Pee Wee Herman's Big Adventure"});
+db.movies.deleteOne({"title":"Avatar"});
+
+db.users.insert({"username":"SallySmith","first_name" : "Sally","last_name" : "Smith"});
+db.users.insert({"username":"JimmyHagen","full_name":{"first":"Jimmy","last":"Hagen"}});
+
+db.posts.insert({"username":"SallySmith","title":"Passes out at party", "body" : "Wakes up early and cleans house"});
+db.posts.insert({"username":"SallySmith","title":"Buys a house", "body" : "Living in a new neighborhood now"});
+db.posts.insert({"username":"SallySmith","title":"Reports a bug in your code", "body" : "Sends you a Pull Request"});
+db.posts.insert({"username":"JimmyHagen","title":"Borrows something", "body" : "Returns it when he is done"});
+db.posts.insert({"username":"JimmyHagen","title":"Borrows everything", "body" : "The end"});
+db.posts.insert({"username":"JimmyHagen","title":"Forks your repo on github", "body" : "Sets to private"});
+
+var post = db.posts.findOne({"title":"Borrows something"})._id.str;
+db.comments.insert({"username":"SallySmith","comment":"Hope you got a good deal!","post":post});
+where [post_obj_id] is the ObjectId of the posts document: "Borrows something"
+
+//db.comments.updateOne({"username":"SallySmith"},{$set:{"post": post}});
+
+var post = db.posts.findOne({"title":"Borrows everything"})._id.str;
+db.comments.insert({"username":"SallySmith","comment":"What's mine is yours!","post":post});
+where [post_obj_id] is the ObjectId of the posts document: "Borrows everything"
+
+var post = db.posts.findOne({"title":"Forks your repo on github"})._id.str;
+db.comments.insert({"username":"SallySmith","comment":"Don't violate the licensing agreement!","post":post});
+where [post_obj_id] is the ObjectId of the posts document: "Forks your repo on github
+
+var post = db.posts.findOne({"title":"Passes out at party"})._id.str;
+db.comments.insert({"username":"JimmyHagen","comment":"It still isn't clean","post":post});
+where [post_obj_id] is the ObjectId of the posts document: "Passes out at party"
+
+var post = db.posts.findOne({"title":"Reports a bug in your code"})._id.str;
+db.comments.insert({"username":"JimmyHagen","comment":"Denied your PR cause I found a hack","post":post});
+where [post_obj_id] is the ObjectId of the posts document: "Reports a bug in your code"
+
+db.users.find({});
+db.posts.find({});
+db.posts.find({"username":"SallySmith"});
+db.posts.find({"username":"JimmyHagen"});
+db.comments.find({});
+db.comments.find({"username":"SallySmith"});
+db.comments.find({"username":"JimmyHagen"});
+var post = db.posts.findOne({"title":"Reports a bug in your code"})._id.str;
+db.comments.find({"post":post});
